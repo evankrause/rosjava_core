@@ -17,6 +17,7 @@
 package org.ros.node;
 
 import org.ros.exception.ServiceNotFoundException;
+import org.ros.internal.node.service.ServiceManager;
 import org.ros.message.Time;
 import org.ros.namespace.GraphName;
 import org.ros.namespace.NameResolver;
@@ -160,4 +161,6 @@ public interface ConnectedNode extends Node {
    * @return {@link ParameterTree} with {@link NameResolver} in this namespace.
    */
   ParameterTree getParameterTree();
+  
+  ServiceManager getServiceManager();
 }

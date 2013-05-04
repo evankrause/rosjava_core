@@ -583,4 +583,9 @@ public class DefaultNode implements ConnectedNode {
       }
     });
   }
+
+  @Override
+  public ServiceManager getServiceManager() {
+    return serviceManager;	
+  }
 }
