@@ -16,6 +16,7 @@
 
 package org.ros.actionlib.client;
 
+import org.apache.commons.logging.Log;
 import org.ros.actionlib.ActionSpec;
 import org.ros.actionlib.state.CommState;
 import org.ros.actionlib.state.SimpleClientGoalState;
@@ -604,6 +605,7 @@ public class SimpleActionClient<T_ACTION_FEEDBACK extends Message, T_ACTION_GOAL
    * when the goal was recalled, rejected, preempted, aborted or lost.
    */
   public void waitForResult() throws InterruptedException {
+	  this.goalFinalStateLatch = new CountDownLatch(1);
     goalFinalStateLatch.await();
   }
 
@@ -623,21 +625,16 @@ public class SimpleActionClient<T_ACTION_FEEDBACK extends Message, T_ACTION_GOAL
    *         <tt>false</tt> - Otherwise
    */
   public boolean waitForResult(long timeout, TimeUnit units) throws InterruptedException {
+	  this.goalFinalStateLatch = new CountDownLatch(1);
     return goalFinalStateLatch.await(timeout, units);
   }
 
   @Override
-  public
-      void
-      feedbackCallback(
-          ClientGoalHandle<T_ACTION_FEEDBACK, T_ACTION_GOAL, T_ACTION_RESULT, T_FEEDBACK, T_GOAL, T_RESULT> goalHandle,
-          T_FEEDBACK feedback) {
+  public void
+      feedbackCallback(ClientGoalHandle<T_ACTION_FEEDBACK, T_ACTION_GOAL, T_ACTION_RESULT, T_FEEDBACK, T_GOAL, T_RESULT> goalHandle, T_FEEDBACK feedback) {
     if (this.goalHandle != goalHandle) {
-      actionClient
-          .getNode()
-          .getLog()
-          .error(
-              "[SimpleActionClient] Got a callback on a goalHandle that the client is not tracking. This is an internal SimpleActionClient/ActionClient bug or a GoalID collision.");
+      actionClient.getNode().getLog()
+      	.error("[SimpleActionClient] Got a callback on a goalHandle that the client is not tracking. This is an internal SimpleActionClient/ActionClient bug or a GoalID collision.");
     }
 
     if (callbacks != null) {
@@ -646,17 +643,11 @@ public class SimpleActionClient<T_ACTION_FEEDBACK extends Message, T_ACTION_GOAL
   }
 
   @Override
-  public
-      void
-      transitionCallback(
-          ClientGoalHandle<T_ACTION_FEEDBACK, T_ACTION_GOAL, T_ACTION_RESULT, T_FEEDBACK, T_GOAL, T_RESULT> goalHandle)
-          throws RosException {
+  public void
+      transitionCallback(ClientGoalHandle<T_ACTION_FEEDBACK, T_ACTION_GOAL, T_ACTION_RESULT, T_FEEDBACK, T_GOAL, T_RESULT> goalHandle) throws RosException {
     if (this.goalHandle != goalHandle) {
-      actionClient
-          .getNode()
-          .getLog()
-          .error(
-              "[SimpleActionClient] Got a callback on a goalHandle that the client is not tracking. This is an internal SimpleActionClient/ActionClient bug or a GoalID collision.");
+      actionClient.getNode().getLog()
+          .error("[SimpleActionClient] Got a callback on a goalHandle that the client is not tracking. This is an internal SimpleActionClient/ActionClient bug or a GoalID collision.");
     }
 
     CommState commState = goalHandle.getCommState();

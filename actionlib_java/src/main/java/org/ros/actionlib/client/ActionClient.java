@@ -345,6 +345,7 @@ public class ActionClient<T_ACTION_FEEDBACK extends Message, T_ACTION_GOAL exten
    *         established)
    */
   public void waitForActionServerToStart() throws InterruptedException {
+	  this.readyLatch = new CountDownLatch(2);
     readyLatch.await();
   }
 
@@ -367,6 +368,7 @@ public class ActionClient<T_ACTION_FEEDBACK extends Message, T_ACTION_GOAL exten
     // TODO(keith): This isn't quite right since it will only have connection to
     // the goal and cancel publishers. This should be extended to include the
     // subscribers.
+	  this.readyLatch = new CountDownLatch(2);
     return readyLatch.await(timeout, units);
   }
 
