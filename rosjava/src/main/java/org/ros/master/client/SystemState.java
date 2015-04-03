@@ -29,9 +29,11 @@ public class SystemState {
 	 * All topics known.
 	 */
 	private final Collection<TopicSystemState> topics;
+	private final Collection<ServiceSystemState> services;
 
-	public SystemState(Collection<TopicSystemState> topics) {
+	public SystemState(Collection<TopicSystemState> topics, Collection<ServiceSystemState> services) {
 		this.topics = topics;
+		this.services = services;
 	}
 
 	/**
@@ -41,5 +43,14 @@ public class SystemState {
 	 */
 	public Collection<TopicSystemState> getTopics() {
 		return topics;
+	}
+        
+        /**
+	 * Get all services in the system state.
+	 * 
+	 * @return a collection of topics.
+	 */
+	public Collection<ServiceSystemState> getServices() {
+		return services;
 	}
 }
