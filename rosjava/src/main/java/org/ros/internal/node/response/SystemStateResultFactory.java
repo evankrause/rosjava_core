@@ -21,6 +21,7 @@ import com.google.common.collect.Sets;
 
 import org.ros.master.client.SystemState;
 import org.ros.master.client.TopicSystemState;
+import org.ros.master.client.ServiceSystemState;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -42,9 +43,9 @@ public class SystemStateResultFactory implements ResultFactory<SystemState> {
 
 		Map<String, Set<String>> publisherMap = getPublishers(vals[0]);
 		Map<String, Set<String>> subscriberMap = getSubscribers(vals[1]);
+		Map<String, Set<String>> servicesMap = getServiceProviders(vals[2]);
 
 		Map<String, TopicSystemState> topics = Maps.newHashMap();
-
 		for (Entry<String, Set<String>> publisherData : publisherMap.entrySet()) {
 			String topicName = publisherData.getKey();
 
@@ -60,8 +61,7 @@ public class SystemStateResultFactory implements ResultFactory<SystemState> {
 							subscriberNodes));
 		}
 
-		for (Entry<String, Set<String>> subscriberData : subscriberMap
-				.entrySet()) {
+		for (Entry<String, Set<String>> subscriberData : subscriberMap.entrySet()) {
 			// At this point there are no publishers with the same topic name
 			HashSet<String> noPublishers = Sets.newHashSet();
 			String topicName = subscriberData.getKey();
@@ -69,20 +69,23 @@ public class SystemStateResultFactory implements ResultFactory<SystemState> {
 					noPublishers, subscriberData.getValue()));
 		}
 
-		// TODO(keith): Get service state in here.
+		Map<String, ServiceSystemState> services = Maps.newHashMap();
+		for (Entry<String, Set<String>> servicesData : servicesMap.entrySet()) {
+			String serviceName = servicesData.getKey();
+			services.put(serviceName, new ServiceSystemState(serviceName, servicesData.getValue()));
+		}
 
-		return new SystemState(topics.values());
+		return new SystemState(topics.values(), services.values());
 	}
 
-	  /**
-   * Extract out the publisher data.
-   * 
-   * @param pubPairs
-   *          the list of lists containing both a topic name and a list of
-   *          publisher nodes for that topic
-   * 
-   * @return a mapping from topic name to the set of publishers for that topic
-   */
+	/**
+        * Extract out the publisher data.
+        *
+        * @param pubPairs the list of lists containing both a topic name and a list
+        * of publisher nodes for that topic
+        *
+        * @return a mapping from topic name to the set of publishers for that topic
+        */
 	private Map<String, Set<String>> getPublishers(Object pubPairs) {
 		Map<String, Set<String>> topicToPublishers = Maps.newHashMap();
 
@@ -127,5 +130,33 @@ public class SystemStateResultFactory implements ResultFactory<SystemState> {
 		}
 
 		return topicToSubscribers;
+	}
+        
+        /**
+	 * Extract out the services data.
+	 * 
+	 * @param subPairs
+	 *            the list of lists containing both a service name and a list of
+	 *            service providing nodes for that service
+	 * 
+	 * @return a mapping from service name to the set of service
+         *           providing nodes for that service
+	 */
+	private Map<String, Set<String>> getServiceProviders(Object subPairs) {
+		Map<String, Set<String>> serviceToProviders = Maps.newHashMap();
+
+		for (Object serviceData : Arrays.asList((Object[]) subPairs)) {
+			String serviceName = (String) ((Object[]) serviceData)[0];
+
+			Set<String> providers =Sets.newHashSet();
+			Object[] providerData = (Object[])((Object[]) serviceData)[1];
+			for (Object provider : providerData) {
+				providers.add(provider.toString());
+			}
+
+			serviceToProviders.put(serviceName, providers);
+		}
+
+		return serviceToProviders;
 	}
 }
