@@ -138,8 +138,6 @@ public class GenerateInterfaces {
 
   public void generate(File outputDirectory, Collection<String> packages,
       Collection<File> packagePath) {
-    System.out.println("packages: " + packages);
-    System.out.println("packagePaths: " + packagePath);
     for (File directory : packagePath) {
       //EAK: catkin workspaces put .msg files generated from .action
       //files into devel/share/<package_name>/msg so explicitly check there
