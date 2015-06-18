@@ -36,9 +36,9 @@ import org.ros.node.NodeConfiguration;
  */
 public class ServiceTypeClient {
 
-    public static String getServiceType(final String serviceName) {
+    public static String getServiceType(final String serviceName, final MasterClient master) {
         // Get service URI
-        MasterClient master = new MasterClient(NodeConfiguration.newPrivate().getMasterUri());
+        //MasterClient master = new MasterClient(NodeConfiguration.newPrivate().getMasterUri());
         URI serviceURI = master.lookupService(GraphName.root(), serviceName).getResult();
 
         // Create the socket connection
