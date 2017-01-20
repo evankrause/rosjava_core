@@ -479,10 +479,13 @@ public class ActionSpec<
       String fm = feedbackMessage.replace('/','.');
       Method m = a.getClass().getMethod("setHeader", Header.class );
       header.setStamp(t);
+      m.setAccessible(true); // workaround for known bug http://bugs.java.com/bugdatabase/view_bug.do?bug_id=6924232
       m.invoke(a, header);
       m = a.getClass().getMethod("setFeedback", Class.forName(fm));
+      m.setAccessible(true); // workaround for known bug http://bugs.java.com/bugdatabase/view_bug.do?bug_id=6924232
       m.invoke(a, feedback);
       m = a.getClass().getMethod("setStatus", GoalStatus.class);
+      m.setAccessible(true); // workaround for known bug http://bugs.java.com/bugdatabase/view_bug.do?bug_id=6924232
       m.invoke(a, gs);
 
     } catch (Exception e) {
@@ -529,10 +532,13 @@ public class ActionSpec<
       String gm = goalMessage.replace('/','.');
       Method m = a.getClass().getMethod("setHeader", Header.class );
       header.setStamp(t);
+      m.setAccessible(true); // workaround for known bug http://bugs.java.com/bugdatabase/view_bug.do?bug_id=6924232
       m.invoke(a, header);
       m = a.getClass().getMethod("setGoal", Class.forName(gm));
+      m.setAccessible(true); // workaround for known bug http://bugs.java.com/bugdatabase/view_bug.do?bug_id=6924232
       m.invoke(a, goal);
       m = a.getClass().getMethod("setGoalId", GoalID.class);
+      m.setAccessible(true); // workaround for known bug http://bugs.java.com/bugdatabase/view_bug.do?bug_id=6924232
       m.invoke(a, goalID);
 
     } catch (Exception e) {
@@ -579,10 +585,13 @@ public class ActionSpec<
       String rm = resultMessage.replace('/','.');
       Method m = a.getClass().getMethod("setHeader", Header.class );
       header.setStamp(t);
+      m.setAccessible(true); // workaround for known bug http://bugs.java.com/bugdatabase/view_bug.do?bug_id=6924232
       m.invoke(a, header);
       m = a.getClass().getDeclaredMethod("setResult", Class.forName(rm));
+      m.setAccessible(true); // workaround for known bug http://bugs.java.com/bugdatabase/view_bug.do?bug_id=6924232
       m.invoke(a, result);
       m = a.getClass().getMethod("setStatus", GoalStatus.class);
+      m.setAccessible(true); // workaround for known bug http://bugs.java.com/bugdatabase/view_bug.do?bug_id=6924232
       m.invoke(a, gs);
 
     } catch (Exception e) {
@@ -652,6 +661,7 @@ public class ActionSpec<
       throws RosException {
     try {
       Method m = clsActionFeedback.getMethod("getFeedback");
+      m.setAccessible(true); // workaround for known bug http://bugs.java.com/bugdatabase/view_bug.do?bug_id=6924232
       return clsFeedback.cast(m.invoke(actionFeedback));
     } catch (Exception e) {
       throw new RosException(
@@ -669,6 +679,7 @@ public class ActionSpec<
   public T_GOAL getGoalFromActionGoal(T_ACTION_GOAL actionGoal) throws RosException {
     try {
       Method m = clsActionGoal.getMethod("getGoal");
+      m.setAccessible(true); // workaround for known bug http://bugs.java.com/bugdatabase/view_bug.do?bug_id=6924232
       return clsGoal.cast(m.invoke(actionGoal));
     } catch (Exception e) {
       throw new RosException("[ActionSpec] Couldn't find field 'goal' in action goal message.", e);
@@ -685,6 +696,7 @@ public class ActionSpec<
   public T_RESULT getResultFromActionResult(T_ACTION_RESULT actionResult) throws RosException {
     try {
       Method m = clsActionResult.getMethod("getResult");
+      m.setAccessible(true); // workaround for known bug http://bugs.java.com/bugdatabase/view_bug.do?bug_id=6924232
       return clsResult.cast(m.invoke(actionResult));
     } catch (Exception e) {
       throw new RosException("[ActionSpec] Couldn't find field 'result' in action result message.",
@@ -702,6 +714,7 @@ public class ActionSpec<
   public GoalID getGoalIDFromActionGoal(T_ACTION_GOAL actionGoal) throws RosException {
     try {
       Method m = clsActionGoal.getMethod("getGoalId");
+      m.setAccessible(true); // workaround for known bug http://bugs.java.com/bugdatabase/view_bug.do?bug_id=6924232
       return (GoalID) m.invoke(actionGoal);
     } catch (Exception e) {
       throw new RosException(
@@ -720,6 +733,7 @@ public class ActionSpec<
       throws RosException {
     try {
       Method m = clsActionFeedback.getMethod("getStatus");
+      m.setAccessible(true); // workaround for known bug http://bugs.java.com/bugdatabase/view_bug.do?bug_id=6924232
       return (GoalStatus) m.invoke(actionFeedback);
     } catch (Exception e) {
       throw new RosException(
@@ -738,6 +752,7 @@ public class ActionSpec<
   public GoalStatus getGoalStatusFromActionResult(T_ACTION_RESULT actionResult) throws RosException {
     try {
       Method m = clsActionResult.getMethod("getStatus");
+      m.setAccessible(true); // workaround for known bug http://bugs.java.com/bugdatabase/view_bug.do?bug_id=6924232
       return (GoalStatus) m.invoke(actionResult);
     } catch (Exception e) {
       throw new RosException(
