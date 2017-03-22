@@ -36,7 +36,7 @@ subprojects {
     repositories {
       mavenLocal()
       maven {
-        url 'https://github.com/rosjava/rosjava_mvn_repo/raw/master'
+	url 'https://maven-us.nuxeo.org/nexus/content/repositories/public'
       }
     }
   }
