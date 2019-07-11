@@ -14,8 +14,8 @@
  * the License.
  */
 
-task wrapper(type: Wrapper) {
-  gradleVersion = '1.5'
+wrapper {
+  gradleVersion = '5.0'
 }
 
 allprojects {
@@ -30,8 +30,8 @@ subprojects {
     apply plugin: 'eclipse'
     apply plugin: 'maven'
 
-    sourceCompatibility = 1.6
-    targetCompatibility = 1.6
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
 
     repositories {
       mavenLocal()
