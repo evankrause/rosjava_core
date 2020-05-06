@@ -36,6 +36,9 @@ subprojects {
     repositories {
       mavenLocal()
       maven {
+        url 'https://repo1.maven.org/maven2/'
+      }
+      maven {
         url 'https://maven-us.nuxeo.org/nexus/content/repositories/public'
       }
     }
