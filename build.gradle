@@ -34,6 +34,9 @@ subprojects {
     targetCompatibility = 1.6
 
     repositories {
+      maven {
+        url 'https://repo1.maven.org/maven2/'
+      }
       mavenLocal()
       maven {
         url 'https://maven-us.nuxeo.org/nexus/content/repositories/public'
