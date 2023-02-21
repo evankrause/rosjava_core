@@ -15,24 +15,15 @@
  */
 
 dependencies {
-  compile project(':rosjava_bootstrap')
+  implementation project(':rosjava_bootstrap')
 }
 
-
-task generateSources(type: JavaExec) {
+tasks.register('generateSources', JavaExec) {
   def outputDir = "${buildDir}/generated-src"
   outputs.dir file(outputDir)
   args outputDir
-  classpath = configurations.runtime
-  main = 'org.ros.internal.message.GenerateInterfaces'
+  classpath = files(configurations.runtimeClasspath)
+  mainClass = 'org.ros.internal.message.GenerateInterfaces'
 }
 
 compileJava.source generateSources.outputs.files
-
-eclipse.classpath.file {
-  withXml {
-    // TODO(damonkohler): Avoid repetition of build directory. This is
-    // necessary because Eclipse wants a project relative path.
-    it.asNode().appendNode('classpathentry', [kind: 'src', path: 'build/generated-src'])
-  }
-}

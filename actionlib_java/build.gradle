@@ -15,13 +15,15 @@
  */
 
 dependencies {
-  compile project(':rosjava')
+  implementation project(':rosjava')
+  implementation project(':rosjava_bootstrap')
+  implementation project(':rosjava_messages')
 }
 
 jar {
   manifest {
-    version = '0.0.0-SNAPSHOT'
-    symbolicName = 'org.ros.actionlib_java'
+    archiveVersion= '0.0.0-SNAPSHOT'
+    archiveFileName = 'org.ros.actionlib_java'
   }
 }
 

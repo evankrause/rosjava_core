@@ -15,19 +15,19 @@
  */
 
 dependencies {
-  compile 'org.apache.commons:com.springsource.org.apache.commons.codec:1.3.0'
-  compile 'org.apache.commons:com.springsource.org.apache.commons.lang:2.4.0'
-  compile 'org.apache.commons:com.springsource.org.apache.commons.io:1.4.0'
-  compile 'commons-pool:commons-pool:1.6'
-  compile 'com.google.guava:guava:12.0'
-  compile 'io.netty:netty:3.5.2.Final'
-  testCompile 'junit:junit:4.8.2'
+  implementation 'org.apache.commons:com.springsource.org.apache.commons.codec:1.3.0'
+  implementation 'org.apache.commons:com.springsource.org.apache.commons.lang:2.4.0'
+  implementation 'org.apache.commons:com.springsource.org.apache.commons.io:1.4.0'
+  implementation 'commons-pool:commons-pool:1.6'
+  //implementation 'com.google.guava:guava:12.0'
+  implementation 'com.google.guava:guava:31.1-jre'
+  implementation 'io.netty:netty:3.5.2.Final'
+  testImplementation 'junit:junit:4.8.2'
 }
 
 jar {
   manifest {
-    version = '0.0.0-SNAPSHOT'
-    symbolicName = 'org.ros.rosjava_bootstrap'
+    archiveVersion = '0.0.0-SNAPSHOT'
+    archiveFileName = 'org.ros.rosjava_bootstrap'
   }
 }
-
