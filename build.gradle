@@ -4,11 +4,9 @@
  * This is a general purpose Gradle build.
  * Learn more about Gradle by exploring our samples at https://docs.gradle.org/7.6/samples
  */
-
-//subProjects {
-//    apply plugin: 'java-library'
-//}
-
+wrapper {
+  gradleVersion = "7.6"
+}
 
 subprojects {
   apply plugin: 'java-library'
