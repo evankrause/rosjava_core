@@ -14,9 +14,9 @@
  * the License.
  */
 
- //plugins {
- //  id 'java-library'
- //}
+ plugins {
+   id 'maven-publish'
+ }
 
 dependencies {
   implementation 'org.apache.commons:com.springsource.org.apache.commons.httpclient:3.1.0'
@@ -24,3 +24,20 @@ dependencies {
   implementation group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1'
 }
 
+//jar {
+//  manifest {
+//    archiveVersion = '0.0.0'
+//  }
+//
+//}
+//version = "0.0.0"
+publishing {
+  publications {
+    mavenJava(MavenPublication) {
+      from components.java
+    }
+  }
+  repositories {
+    mavenLocal()
+  }
+}

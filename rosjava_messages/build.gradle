@@ -13,9 +13,13 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
+plugins {
+  id 'maven-publish'
+}
 
 dependencies {
   implementation project(':rosjava_bootstrap')
+  implementation 'org.jboss.netty:netty:3.2.10.Final'
 }
 
 tasks.register('generateSources', JavaExec) {
@@ -26,4 +30,23 @@ tasks.register('generateSources', JavaExec) {
   mainClass = 'org.ros.internal.message.GenerateInterfaces'
 }
 
+
 compileJava.source generateSources.outputs.files
+
+jar {
+  manifest {
+    archiveVersion= '0.0.0'
+    archiveFileName = 'org.ros.rosjava_messages'
+  }
+}
+publishing {
+  publications {
+    rosJava(MavenPublication) {
+      version = "0.0.0"
+      from components.java
+    }
+  }
+  repositories {
+    mavenLocal()
+  }
+}

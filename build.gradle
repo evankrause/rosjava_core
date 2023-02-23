@@ -23,14 +23,11 @@ subprojects {
     //  url 'https://maven-us.nuxeo.org/nexus/content/repositories/public'
       url "https://plugins.gradle.org/m2/"
     }
-
   }
   dependencies {
     //implementation 'org.apache.commons:org.apache.commons.httpclient:3.1.0'
     // https://mvnrepository.com/artifact/commons-httpclient/commons-httpclient
     implementation 'commons-httpclient:commons-httpclient:3.1'
-    implementation 'org.jboss.netty:netty:3.2.10.Final'
-    implementation 'com.google.guava:guava:31.1-jre'
 
   }
 }

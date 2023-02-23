@@ -13,6 +13,9 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
+plugins {
+  id 'maven-publish'
+}
 
 dependencies {
   implementation project(':rosjava_bootstrap')
@@ -20,23 +23,41 @@ dependencies {
   implementation project(':apache_xmlrpc_common')
   implementation project(':apache_xmlrpc_server')
   implementation project(':apache_xmlrpc_client')
+  //implementation 'org.apache.xmlrpc:xmlrpc-client:3.1.3'
+  //implementation 'org.apache.xmlrpc:xmlrpc-common:3.1.3'
+  //implementation 'org.apache.xmlrpc:xmlrpc-server:3.1.3'
+  implementation 'org.jboss.netty:netty:3.2.10.Final'
+  implementation 'com.google.guava:guava:31.1-jre'
+
   implementation 'dnsjava:dnsjava:2.1.1'
   implementation 'org.apache.commons:com.springsource.org.apache.commons.logging:1.1.1'
   implementation 'org.apache.commons:com.springsource.org.apache.commons.net:2.0.0'
+  runtimeOnly project(':apache_xmlrpc_common')
+  runtimeOnly  project(':apache_xmlrpc_server')
+  runtimeOnly  project(':apache_xmlrpc_client')
   testImplementation 'junit:junit:4.8.2'
   testImplementation 'org.mockito:mockito-all:1.8.5'
   testImplementation project(':rosjava_bootstrap')
   testImplementation project(':rosjava_messages')
-  implementation 'com.google.guava:guava:31.1-jre'
   //implementation 'com.google.common:google-collect:1.0-rc1'
 }
 
 jar {
   manifest {
-    archiveVersion = '0.0.0-SNAPSHOT'
+    archiveVersion = '0.0.0'
     archiveFileName = 'org.ros.rosjava'
-    //instruction 'Export-Package', '!org.ros.internal.*, org.ros.*'
-    //instruction 'Private-Package', 'org.ros.internal.*'
+  }
+
+}
+publishing {
+  publications {
+    mavenJava(MavenPublication) {
+      version = "0.0.0"
+      from components.java
+    }
+  }
+  repositories {
+    mavenLocal()
   }
 }
 

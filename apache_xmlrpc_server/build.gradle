@@ -14,8 +14,21 @@
  * the License.
  */
 
+plugins {
+  id 'maven-publish'
+}
 dependencies {
   implementation project(':apache_xmlrpc_common')
   implementation 'org.apache.commons:com.springsource.org.apache.commons.logging:1.1.1'
+}
+publishing {
+  publications {
+    mavenJava(MavenPublication) {
+      from components.java
+    }
+  }
+  repositories {
+    mavenLocal()
+  }
 }
 

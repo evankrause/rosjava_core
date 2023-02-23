@@ -9,6 +9,11 @@
 
 rootProject.name = 'rosjava_core'
 
-include 'rosjava_bootstrap', 'rosjava_messages', 'apache_xmlrpc_common',
-        'apache_xmlrpc_client', 'apache_xmlrpc_server', 'rosjava',
-        'rosjava_geometry', 'actionlib_java'
+include 'rosjava_bootstrap',
+        'rosjava_messages',
+        'apache_xmlrpc_common',
+        'apache_xmlrpc_client',
+        'apache_xmlrpc_server',
+        'rosjava',
+        'rosjava_geometry',
+        'actionlib_java'
