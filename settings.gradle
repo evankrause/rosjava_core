@@ -15,5 +15,9 @@ include 'rosjava_bootstrap',
         'apache_xmlrpc_client',
         'apache_xmlrpc_server',
         'rosjava',
+        'rosade_core',
         'rosjava_geometry',
-        'actionlib_java'
+        'actionlib_java',
+        'rosade_core:rosade_messages',
+        'rosade_core:rosade_bootstrap',
+        'rosade_boostrasp'

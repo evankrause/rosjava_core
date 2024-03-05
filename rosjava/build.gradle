@@ -47,7 +47,6 @@ jar {
     archiveVersion = '0.0.0'
     archiveFileName = 'org.ros.rosjava'
   }
-
 }
 publishing {
   publications {

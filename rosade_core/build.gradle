@@ -1,0 +1,10 @@
+plugins {
+  id 'maven-publish'
+}
+apply plugin: 'java-library'
+
+dependencies {
+  implementation(project(":rosjava"))
+}
+
+

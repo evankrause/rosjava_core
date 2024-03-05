@@ -1,0 +1,3 @@
+<launch>
+  <node pkg="proxy" type="move_base_proxy" name="move_base_proxy" output="screen"/>
+</launch>

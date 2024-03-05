@@ -1,0 +1,6 @@
+#+TITLE:     ROSADE Bugs
+
+List bugs here
+
+* hanging during PR2 initialization
+* rosrun not found by exec

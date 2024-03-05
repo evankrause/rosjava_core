@@ -1,0 +1,184 @@
+package edu.tufts.hrilab.rosade.{{javapackage}};
+
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+import org.ros.address.InetAddressFactory;
+import org.ros.exception.RosException;
+import org.ros.message.MessageListener;
+import org.ros.namespace.GraphName;
+import org.ros.node.AbstractNodeMain;
+import org.ros.node.ConnectedNode;
+import org.ros.node.DefaultNodeMainExecutor;
+import org.ros.node.NodeConfiguration;
+import org.ros.node.NodeMain;
+import org.ros.node.NodeMainExecutor;
+import org.ros.node.service.ServiceClient;
+import org.ros.node.service.ServiceResponseListener;
+import org.ros.node.topic.Publisher;
+import org.ros.node.topic.Subscriber;
+
+public class {{javanodename}} {
+    // ROS connection
+    private ConnectedNode node;
+    private NodeMain nodeMain;
+    private NodeMainExecutor nodeMainExecutor;
+
+    // ROS node ready/wait
+    private volatile boolean nodeReady = false;
+    private final Lock nodeReadyLock = new ReentrantLock();
+    private final Condition nodeReadyCond = nodeReadyLock.newCondition();
+
+    // Local data & Locks
+    {{#subscriptions}}
+    private edu.tufts.hrilab.rosade.msg.{{type}} {{name}};
+    private final Object {{name}}Lock = new Object();
+    {{/subscriptions}}
+
+    // Publishers
+    {{#publications}}
+    private Publisher<{{type}}> {{name}}Publisher;
+    {{/publications}}
+
+    // Services
+    {{#services}}
+    ServiceClient<{{type}}Request, {{type}}Response> {{name}};
+    {{type}}Response {{name}}Response;
+    final Object {{name}}Lock = new Object();
+    boolean {{name}}Condition = false;
+    boolean {{name}}Success = false;
+    {{/services}}
+
+    public {{javanodename}}() {
+        nodeMain = new AbstractNodeMain() {
+            @Override
+            public GraphName getDefaultNodeName() {
+                return GraphName.of("ade{{nodename}}");
+            }
+                
+            @Override
+            public void onStart(ConnectedNode connectedNode) {
+                node = connectedNode;
+                // Subscribers
+                {{#subscriptions}}
+                Subscriber<{{type}}> {{name}}Sub = node.newSubscriber("{{topic}}", {{type}}._TYPE);
+                {{name}}Sub.addMessageListener(new MessageListener<{{type}}>() {
+                    @Override
+                    public void onNewMessage({{type}} msg) {
+                        synchronized ({{name}}Lock) {
+                            {{name}} = edu.tufts.hrilab.rosade.msg.{{type}}.toAde(msg);
+                        }
+                    }
+                });
+                {{/subscriptions}}
+
+                // Publishers
+                {{#publications}}
+                {{name}}Publisher = node.newPublisher("{{topic}}", {{type}}._TYPE);
+                {{/publications}}
+
+                //Services
+                {{#services}}
+                try {
+                    {{name}} = node.newServiceClient("{{rosname}}", {{type}}._TYPE);
+                } catch (org.ros.exception.ServiceNotFoundException e) {
+                    System.err.println("Could not find service! Exception: " + e);
+                }
+                {{/services}}
+
+                // notify of node ready
+                nodeReadyLock.lock();
+                nodeReady = true;
+                try {
+                  nodeReadyCond.signalAll();
+                } finally {
+                  nodeReadyLock.unlock();
+                }
+            }
+         };
+        
+         try {
+           URI ros_master_uri = new URI(System.getenv("ROS_MASTER_URI"));
+           String host = InetAddressFactory.newNonLoopback().getHostAddress();
+           NodeConfiguration nodeConfiguration = NodeConfiguration.newPublic(host, ros_master_uri);
+           nodeMainExecutor = DefaultNodeMainExecutor.newDefault();
+           nodeMainExecutor.execute(nodeMain, nodeConfiguration);
+         } catch (URISyntaxException e) {
+           System.err.println("Error trying to create URI: " + e);
+         }
+    }
+
+    // wait for node to be ready
+    public void waitForNode() {
+      nodeReadyLock.lock();
+      try {
+        while (!nodeReady) {
+          nodeReadyCond.awaitUninterruptibly();
+        }
+      } finally {
+        nodeReadyLock.unlock();
+      }
+    }
+    
+    public edu.tufts.hrilab.rosade_core.rosade_bootstrap.src.main.java.edu.tufts.hrilab.rosade.msg.rosade.Time getCurrentTime() {
+      return edu.tufts.hrilab.rosade_core.rosade_bootstrap.src.main.java.edu.tufts.hrilab.rosade.msg.rosade.Time.toAde(node.getCurrentTime());
+    }
+
+    {{#subscriptions}}
+    public synchronized edu.tufts.hrilab.rosade.msg.{{type}} get{{name}}() {
+        return {{name}};
+    }
+    {{/subscriptions}}
+
+    {{#publications}}
+    public void send{{name}}(edu.tufts.hrilab.rosade.msg.{{type}} msg) {
+        {{name}}Publisher.publish(edu.tufts.hrilab.rosade.msg.{{type}}.toRos(msg, node));
+    }
+    {{/publications}}
+
+    // Services
+    {{#services}}
+    public boolean call{{name}}(edu.tufts.hrilab.rosade.msg.{{type}}Request request, edu.tufts.hrilab.rosade.msg.{{type}}Response response) {
+        {{name}}Condition = false;
+        {{name}}Success = false;
+        {{name}}.call(edu.tufts.hrilab.rosade.msg.{{type}}Request.toRos(request, node),
+                new ServiceResponseListener<{{type}}Response>() {
+
+            @Override
+            public void onSuccess({{type}}Response mt) {
+                {{name}}Response = mt;
+                synchronized({{name}}Lock) {
+                    {{name}}Condition = true;
+                    {{name}}Success = true;
+                    {{name}}Lock.notify();
+                }
+            }
+
+            @Override
+            public void onFailure(org.ros.exception.RemoteException re) {
+                synchronized({{name}}Lock) {
+                    {{name}}Condition = true;
+                    {{name}}Success = false;
+                    {{name}}Lock.notify();
+                }
+            }
+        });
+        
+        synchronized({{name}}Lock) {
+            while(!{{name}}Condition) {
+                try {
+                    {{name}}Lock.wait();
+                } catch (InterruptedException e) {
+                }
+            }
+        }
+        if ({{name}}Success) {
+            edu.tufts.hrilab.rosade.msg.{{type}}Response.toAde({{name}}Response, response);
+        }
+        return {{name}}Success;
+    }
+    {{/services}}
+}
+    
