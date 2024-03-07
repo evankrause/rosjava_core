@@ -15,9 +15,9 @@ repositories {
 }
 
 dependencies {
-    implementation 'rosjava_core:rosjava:0.0.0'
-    implementation 'rosjava_core:rosjava_bootstrap:0.0.0'
-    implementation 'rosjava_core:rosjava_messages:0.0.0'
+    implementation(project(":rosjava"))
+    implementation(project(":rosjava_bootstrap"))
+    implementation(project(":rosjava_messages"))
     implementation 'org.jboss.netty:netty:3.2.0.Final'
     implementation project(':rosade_core:rosade_bootstrap')
 //    implementation fileTree(dir: '../lib', include: '*.jar')
