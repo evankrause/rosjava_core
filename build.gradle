@@ -18,13 +18,22 @@ subprojects {
     mavenCentral()
     mavenLocal()
     maven {
-    //  url 'https://maven-us.nuxeo.org/nexus/content/repositories/public'
+//      url 'https://maven-us.nuxeo.org/nexus/content/repositories/public'
       url "https://plugins.gradle.org/m2/"
     }
+//    maven { // hrilab archive
+//      name = "HRILabArchiva"
+//      url = uri("http://hrilab.tufts.edu:11361/repository/internal/")
+//      allowInsecureProtocol = true
+//    }
   }
   dependencies {
     //implementation 'org.apache.commons:org.apache.commons.httpclient:3.1.0'
     // https://mvnrepository.com/artifact/commons-httpclient/commons-httpclient
     implementation 'commons-httpclient:commons-httpclient:3.1'
+  }
+
+  tasks.register("buildAndPublishDiarcRos") {
+    dependsOn ':rosjava:publishToMavenLocal', ':rosade_core:build', ':rosade_core:collectDeps', ':rosade_core:publishToMavenLocal'
   }
 }

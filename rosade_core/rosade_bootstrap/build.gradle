@@ -5,29 +5,12 @@ plugins {
   id "maven-publish"
 }
 
-// Dependencies
-repositories {
-  mavenCentral()
-  mavenLocal()
-  maven {
-    url "https://plugins.gradle.org/m2/"
-  }
-  flatDir {
-    dirs '../lib'
-  }
-}
-
-
 dependencies {
   implementation 'org.clojure:clojure:1.11.1'
-  implementation(project(":rosjava"))
-  implementation(project(":rosjava_bootstrap"))
-  implementation(project(":rosjava_messages"))
-  implementation(project(":actionlib_java"))
-//  implementation 'rosjava_core:rosjava:0.0.0'
-//  implementation 'rosjava_core:rosjava_bootstrap:0.0.0'
-//  implementation 'rosjava_core:rosjava_messages:0.0.0'
-//  implementation 'rosjava_core:actionlib_java:0.0.0'
+  implementation 'rosjava_core:rosjava:0.0.0'
+  implementation 'rosjava_core:rosjava_bootstrap:0.0.0'
+  implementation 'rosjava_core:rosjava_messages:0.0.0'
+  implementation 'rosjava_core:actionlib_java:0.0.0'
   implementation 'de.ubercode.clostache:clostache:1.4.0'
   implementation 'org.clojure:tools.cli:1.0.206'
   implementation 'com.taoensso:timbre:5.2.1'
@@ -38,7 +21,7 @@ dependencies {
 
   implementation fileTree(dir: '../lib', include: '*.jar')
 
-  development project(":rosjava")
+  development 'rosjava_core:rosjava:0.0.0'
   development 'org.clojure:tools.nrepl:0.2.13'
   development 'redl:redl:0.2.4'
   development 'clojure-complete:clojure-complete:0.2.5'
@@ -75,6 +58,8 @@ tasks.register('rosade', JavaExec) {
   }
   args nodeGenArgs
 }
+
+compileJava.dependsOn project(':rosade_core').collectDeps
 
 publishing {
   publications {

@@ -3,24 +3,13 @@ plugins {
     id "nebula.clojure" version "11.0.1"
 }
 
-repositories {
-    mavenCentral()
-    mavenLocal()
-    maven {
-        url "https://plugins.gradle.org/m2/"
-    }
-    flatDir {
-        dirs '../lib'
-    }
-}
-
 dependencies {
-    implementation(project(":rosjava"))
-    implementation(project(":rosjava_bootstrap"))
-    implementation(project(":rosjava_messages"))
+    implementation 'rosjava_core:rosjava:0.0.0'
+    implementation 'rosjava_core:rosjava_bootstrap:0.0.0'
+    implementation 'rosjava_core:rosjava_messages:0.0.0'
     implementation 'org.jboss.netty:netty:3.2.0.Final'
     implementation project(':rosade_core:rosade_bootstrap')
-//    implementation fileTree(dir: '../lib', include: '*.jar')
+    implementation fileTree(dir: '../lib', include: '*.jar')
 }
 
 tasks.register('generateSources', JavaExec) {

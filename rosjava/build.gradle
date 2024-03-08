@@ -20,6 +20,7 @@ plugins {
 dependencies {
   implementation project(':rosjava_bootstrap')
   implementation project(':rosjava_messages')
+//  implementation project(':actionlib_java')
   implementation project(':apache_xmlrpc_common')
   implementation project(':apache_xmlrpc_server')
   implementation project(':apache_xmlrpc_client')
