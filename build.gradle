@@ -34,6 +34,7 @@ subprojects {
   }
 
   tasks.register("buildAndPublishDiarcRos") {
-    dependsOn ':rosjava:publishToMavenLocal', ':rosade_core:build', ':rosade_core:collectDeps', ':rosade_core:publishToMavenLocal'
+    dependsOn ':rosjava:publishToMavenLocal', ':diarcros_core:build', ':diarcros_core:collectDeps', ':diarcros_core:publishToMavenLocal'
   }
+
 }
