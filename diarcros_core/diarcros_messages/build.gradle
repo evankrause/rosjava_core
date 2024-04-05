@@ -7,6 +7,7 @@ dependencies {
     implementation 'rosjava_core:rosjava:0.0.0'
     implementation 'rosjava_core:rosjava_bootstrap:0.0.0'
     implementation 'rosjava_core:rosjava_messages:0.0.0'
+    implementation project(":diarcros_core:diarcros_bootstrap")
     implementation 'org.jboss.netty:netty:3.2.0.Final'
     implementation fileTree(dir: '../lib', include: '*.jar')
 }
@@ -43,8 +44,6 @@ clean {
     println 'Removing auto-generated source files.'
     delete 'src'
 }
-
-
 publishing {
     publications {
         mavenJava(MavenPublication) {

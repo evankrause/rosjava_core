@@ -40,6 +40,14 @@ dependencies {
   //implementation 'com.google.common:google-collect:1.0-rc1'
 }
 
+tasks.named("publishToMavenLocal") {
+  dependsOn(":actionlib_java:publishToMavenLocal")
+  dependsOn(":apache_xmlrpc_client:publishToMavenLocal")
+  dependsOn(":apache_xmlrpc_common:publishToMavenLocal")
+  dependsOn(":apache_xmlrpc_server:publishToMavenLocal")
+  dependsOn(":rosjava_bootstrap:publishToMavenLocal")
+  dependsOn(":rosjava_messages:publishToMavenLocal")
+}
 jar {
   manifest {
     archiveVersion = '0.0.0'

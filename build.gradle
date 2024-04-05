@@ -32,9 +32,17 @@ subprojects {
     // https://mvnrepository.com/artifact/commons-httpclient/commons-httpclient
     implementation 'commons-httpclient:commons-httpclient:3.1'
   }
-
+tasks.register("publishBaseProjects") {
+  dependsOn ':rosjava:publishToMavenLocal'
+  dependsOn ":actionlib_java:publishToMavenLocal"
+  dependsOn ":apache_xmlrpc_client:publishToMavenLocal"
+  dependsOn ":apache_xmlrpc_common:publishToMavenLocal"
+  dependsOn ":apache_xmlrpc_server:publishToMavenLocal"
+  dependsOn ":rosjava_bootstrap:publishToMavenLocal"
+  dependsOn ":rosjava_messages:publishToMavenLocal"
+}
   tasks.register("buildAndPublishDiarcRos") {
-    dependsOn ':rosjava:publishToMavenLocal', ':diarcros_core:build', ':diarcros_core:collectDeps', ':diarcros_core:publishToMavenLocal'
+    dependsOn 'publishBaseProjects', ':diarcros_core:build', ':diarcros_core:collectDeps', ':diarcros_core:publishToMavenLocal'
   }
 
 }

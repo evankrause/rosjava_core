@@ -16,8 +16,3 @@ tasks.register('collectDeps', Copy) {
   from 'diarcros_messages/build/libs' into 'lib'
   from 'diarcros/build/libs' into 'lib'
 }
-
-// Define a task to build, execute custom task, and publish
-tasks.register('collectAndPublish') {
-  dependsOn 'build', 'collectDeps', 'publishToMavenLocal'
-}
