@@ -11,7 +11,6 @@ dependencies {
     implementation 'org.jboss.netty:netty:3.2.0.Final'
     implementation fileTree(dir: '../lib', include: '*.jar')
 }
-
 tasks.register('generateSources', JavaExec) {
     dependsOn(moveStatic)
     dependsOn(project(':diarcros_core:diarcros_bootstrap').compileJava)
@@ -22,7 +21,7 @@ tasks.register('generateSources', JavaExec) {
     outputs.dir file(outputDir)
 
     args outputDir
-    classpath = configurations.runtimeClasspath
+    classpath = configurations.runtimeClasspath + configurations.compileClasspath
     mainClass = 'edu.tufts.hrilab.diarcros.GenerateDiarcrosInterfaces'
 }
 tasks.register('moveStatic', Copy) {
