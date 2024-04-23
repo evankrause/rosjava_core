@@ -1,0 +1,58 @@
+plugins {
+    id "java"
+    id "nebula.clojure" version "11.0.1"
+}
+
+dependencies {
+    implementation 'rosjava_core:rosjava:0.0.0'
+    implementation 'rosjava_core:rosjava_bootstrap:0.0.0'
+    implementation 'rosjava_core:rosjava_messages:0.0.0'
+    compileOnly(project(":diarcros_core:diarcros_bootstrap"))
+    implementation 'org.jboss.netty:netty:3.2.0.Final'
+    implementation fileTree(dir: '../lib', include: '*.jar')
+}
+tasks.register('generateSources', JavaExec) {
+    dependsOn(moveStatic)
+    dependsOn(project(':diarcros_core:diarcros_bootstrap').compileJava)
+
+    group 'DIARCROS'
+    description "Generate the messages for ROS/DIARC communication."
+    def outputDir = "src/main/java/edu/tufts/hrilab/diarcros/msg"
+    outputs.dir file(outputDir)
+
+    args outputDir
+    classpath = configurations.runtimeClasspath + configurations.compileClasspath
+    mainClass = 'edu.tufts.hrilab.diarcros.GenerateDiarcrosInterfaces'
+}
+tasks.register('moveStatic', Copy) {
+    def outputDir = layout.projectDirectory.toString() + "/src/main/java/edu/tufts/hrilab/diarcros/msg"
+    def inputDir = layout.projectDirectory.toString() + "/../diarcros_bootstrap/src/main/java/edu/tufts/hrilab/diarcros/msg"
+    println(outputDir)
+    println(inputDir)
+    from(inputDir)
+    into(outputDir)
+    include('*.java')
+}
+
+println generateSources.outputs.files
+// Ensure the message sources are built
+compileJava.source generateSources.outputs.files
+
+// We need to also remove the source dir since it's auto-generated
+clean {
+    println 'Removing auto-generated source files.'
+    delete 'src'
+}
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId = 'edu.tufts.hrilab'
+            artifactId = 'diarcros_messages'
+            version = "0.0.0"
+            from components.java
+        }
+    }
+    repositories {
+        mavenLocal()
+    }
+}

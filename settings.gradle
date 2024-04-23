@@ -15,5 +15,7 @@ include 'rosjava_bootstrap',
         'apache_xmlrpc_client',
         'apache_xmlrpc_server',
         'rosjava',
-        'rosjava_geometry',
-        'actionlib_java'
+//        'rosjava_geometry',
+        'actionlib_java',
+        'diarcros_core:diarcros_messages',
+        'diarcros_core:diarcros_bootstrap'

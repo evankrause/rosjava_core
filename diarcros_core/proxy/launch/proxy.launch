@@ -1,0 +1,12 @@
+<launch>
+  <node name='head_proxy'    pkg='proxy' type='head_proxy'          output='screen'/>
+
+  <node name='left_arm'      pkg='proxy' type='left_arm_proxy'      output='screen' />
+  <node name='left_gripper'  pkg='proxy' type='left_gripper_proxy'  output='screen' />
+
+  <node name='right_arm'     pkg='proxy' type='right_arm_proxy'     output='screen' />
+  <!-- <node name='right_arm_joint_proxy' pkg='proxy' type='right_arm_joint_proxy'     output='screen' /> -->
+  <node name='right_gripper' pkg='proxy' type='right_gripper_proxy' output='screen' />
+</launch>
+
+

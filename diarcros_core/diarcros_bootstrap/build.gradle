@@ -1,0 +1,62 @@
+plugins {
+  id "java"
+  id "nebula.clojure" version "11.0.1"
+  id "application"
+  id "maven-publish"
+}
+
+dependencies {
+  implementation 'org.clojure:clojure:1.11.1'
+  implementation 'rosjava_core:rosjava:0.0.0'
+  implementation 'rosjava_core:rosjava_bootstrap:0.0.0'
+  implementation 'rosjava_core:rosjava_messages:0.0.0'
+  implementation 'rosjava_core:actionlib_java:0.0.0'
+  implementation 'de.ubercode.clostache:clostache:1.4.0'
+  implementation 'org.clojure:tools.cli:1.0.206'
+  implementation 'com.taoensso:timbre:6.2.1'
+  implementation 'commons-io:commons-io:2.11.0'
+  implementation 'com.google.guava:guava:31.1-jre'
+  implementation 'commons-lang:commons-lang:2.6'
+  implementation 'io.netty:netty-all:4.1.89.Final'
+
+//  implementation fileTree(dir: '../lib', include: '*.jar')
+
+  development 'rosjava_core:rosjava:0.0.0'
+  development 'org.clojure:tools.nrepl:0.2.13'
+  development 'redl:redl:0.2.4'
+  development 'clojure-complete:clojure-complete:0.2.5'
+  
+  testImplementation 'midje:midje:1.10.5'
+}
+
+// Create node generation application
+mainClassName = 'clojure.main'
+
+// Clojure
+//compileClojure.dependsOn compileJava
+//uberjar.enabled = true
+
+tasks.register('diarcros', JavaExec) {
+
+  group 'DIARCROS'
+  description 'Generate a DIARCROS node. Usage: ./gradlew [--daemon] diarcros -Dnodename=/nodename -Dpackage=package.path'
+  classpath sourceSets.main.runtimeClasspath, sourceSets.main.resources.srcDirs
+  mainClass = 'clojure.main'
+
+  def nodeGenArgs = ['-m', 'edu.tufts.hrilab.diarcros.core']
+  try {
+    def nodearg = System.getProperty("nodename")
+    if (nodearg != null) nodeGenArgs.add(nodearg)
+  } catch (MissingPropertyException e) {
+    echo 'invalid nodename', e
+  }
+  try {
+    def packagearg = System.getProperty("package")
+    if (packagearg != null) nodeGenArgs.add(packagearg)
+  } catch (MissingPropertyException e) {
+    echo 'invalid package', e
+  }
+  args nodeGenArgs
+}
+
+compileJava.dependsOn project(':diarcros_core').collectDeps

@@ -1,0 +1,18 @@
+plugins {
+  id 'maven-publish'
+}
+apply plugin: 'java-library'
+
+
+tasks.register('collectDeps', Copy) {
+  duplicatesStrategy 'exclude'
+  description 'Collect dependencies into a single location for simpler Java incovation'
+  group 'DIARCROS'
+  dependsOn 'diarcros_bootstrap:deps'
+  delete 'lib'
+  mkdir('lib')
+  from 'diarcros_bootstrap/lib' into 'lib'
+  from 'diarcros_bootstrap/build/libs' into 'lib'
+  from 'diarcros_messages/build/libs' into 'lib'
+  from 'diarcros/build/libs' into 'lib'
+}

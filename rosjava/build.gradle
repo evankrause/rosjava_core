@@ -20,12 +20,10 @@ plugins {
 dependencies {
   implementation project(':rosjava_bootstrap')
   implementation project(':rosjava_messages')
+//  implementation project(':actionlib_java')
   implementation project(':apache_xmlrpc_common')
   implementation project(':apache_xmlrpc_server')
   implementation project(':apache_xmlrpc_client')
-  //implementation 'org.apache.xmlrpc:xmlrpc-client:3.1.3'
-  //implementation 'org.apache.xmlrpc:xmlrpc-common:3.1.3'
-  //implementation 'org.apache.xmlrpc:xmlrpc-server:3.1.3'
   implementation 'org.jboss.netty:netty:3.2.10.Final'
   implementation 'com.google.guava:guava:31.1-jre'
 
@@ -42,12 +40,19 @@ dependencies {
   //implementation 'com.google.common:google-collect:1.0-rc1'
 }
 
+tasks.named("publishToMavenLocal") {
+  dependsOn(":actionlib_java:publishToMavenLocal")
+  dependsOn(":apache_xmlrpc_client:publishToMavenLocal")
+  dependsOn(":apache_xmlrpc_common:publishToMavenLocal")
+  dependsOn(":apache_xmlrpc_server:publishToMavenLocal")
+  dependsOn(":rosjava_bootstrap:publishToMavenLocal")
+  dependsOn(":rosjava_messages:publishToMavenLocal")
+}
 jar {
   manifest {
     archiveVersion = '0.0.0'
     archiveFileName = 'org.ros.rosjava'
   }
-
 }
 publishing {
   publications {

@@ -23,7 +23,7 @@ dependencies {
 }
 
 tasks.register('generateSources', JavaExec) {
-  def outputDir = "${buildDir}/generated-src"
+  def outputDir = "${buildDir}/generated-src/edu/tufts/hrilab"
   outputs.dir file(outputDir)
   args outputDir
   classpath = files(configurations.runtimeClasspath)
@@ -31,6 +31,7 @@ tasks.register('generateSources', JavaExec) {
 }
 
 
+tasks.compileJava.configure {buildDir="build/classes/main/java/edu/tufts/hrilab"}
 compileJava.source generateSources.outputs.files
 
 jar {
