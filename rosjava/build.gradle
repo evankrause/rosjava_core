@@ -28,8 +28,9 @@ dependencies {
   implementation 'com.google.guava:guava:31.1-jre'
 
   implementation 'dnsjava:dnsjava:2.1.1'
-  implementation 'org.apache.commons:com.springsource.org.apache.commons.logging:1.1.1'
-  implementation 'org.apache.commons:com.springsource.org.apache.commons.net:2.0.0'
+//  implementation 'org.apache.commons:com.springsource.org.apache.commons.logging:1.1.1'
+  implementation("commons-net:commons-net:3.11.1")
+//  implementation 'org.apache.commons:com.springsource.org.apache.commons.net:2.0.0'
   runtimeOnly project(':apache_xmlrpc_common')
   runtimeOnly  project(':apache_xmlrpc_server')
   runtimeOnly  project(':apache_xmlrpc_client')

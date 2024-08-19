@@ -1,6 +1,6 @@
 plugins {
   id "java"
-  id "nebula.clojure" version "11.0.1"
+  id "nebula.clojure" version "14.1.0"
   id "application"
   id "maven-publish"
 }

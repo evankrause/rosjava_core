@@ -19,7 +19,7 @@ plugins {
 }
 dependencies {
   implementation project(':apache_xmlrpc_common')
-  implementation 'org.apache.commons:com.springsource.org.apache.commons.logging:1.1.1'
+//  implementation 'org.apache.commons:com.springsource.org.apache.commons.logging:1.1.1'
 }
 publishing {
   publications {
